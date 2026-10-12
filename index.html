@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="el" data-theme="asphalt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <meta name="robots" content="noindex, nofollow">
+  <title>PsofosFinds</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <script>
+    // before first paint, so the saved theme never flashes
+    try {
+      var t = localStorage.getItem('gallery-theme');
+      t = { dark: 'asphalt', light: 'ecru' }[t] || t;
+      if (['asphalt', 'ecru', 'cobalt'].indexOf(t) >= 0) document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="hero">
+    <p class="eyebrow intro" style="--at:60ms">Προσωπική συλλογή<span class="wide"> <b>/</b> μόνο φωτογραφίες</span></p>
+    <h1 class="title" aria-label="PsofosFinds">
+      <span class="word" aria-hidden="true"><span class="ch" style="--c:0"><span>P</span></span><span class="ch" style="--c:1"><span>s</span></span><span class="ch" style="--c:2"><span>o</span></span><span class="ch" style="--c:3"><span>f</span></span><span class="ch" style="--c:4"><span>o</span></span><span class="ch" style="--c:5"><span>s</span></span></span><span class="word alt" aria-hidden="true"><span class="ch" style="--c:6"><span>F</span></span><span class="ch" style="--c:7"><span>i</span></span><span class="ch" style="--c:8"><span>n</span></span><span class="ch" style="--c:9"><span>d</span></span><span class="ch" style="--c:10"><span>s</span></span></span>
+      <sup class="tally" id="tally" aria-hidden="true"></sup>
+    </h1>
+    <p class="sub intro" style="--at:700ms" id="sub">&nbsp;</p>
+  </header>
+
+  <div class="bar intro" id="bar" style="--at:580ms">
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+      <input id="q" type="search" placeholder="Αναζήτηση με όνομα…" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-label="Αναζήτηση με όνομα">
+      <button class="clear" id="clear" type="button" aria-label="Καθαρισμός αναζήτησης" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </label>
+
+    <nav class="chips" id="chips" aria-label="Κατηγορίες"></nav>
+
+    <div class="themes" role="group" aria-label="Θέμα χρωμάτων">
+      <button class="swatch" type="button" data-set="asphalt" aria-label="Θέμα Asphalt (σκοτεινό)" title="Asphalt"></button>
+      <button class="swatch" type="button" data-set="ecru" aria-label="Θέμα Ecru (ανοιχτό)" title="Ecru"></button>
+      <button class="swatch" type="button" data-set="cobalt" aria-label="Θέμα Cobalt (έντονο)" title="Cobalt"></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <p class="status" id="status" aria-live="polite">Φόρτωση…</p>
+    <div class="sizer" id="sizer"><div class="grid" id="grid"></div></div>
+    <div class="empty" id="empty" hidden>
+      <strong>Δεν βρέθηκε τίποτα</strong>
+      <span id="empty-text">Δοκίμασε άλλη λέξη ή άλλη κατηγορία.</span>
+    </div>
+  </main>
+
+  <div class="ghosts" id="ghosts" aria-hidden="true"></div>
+
+  <button class="icon-btn to-top" id="to-top" type="button" aria-label="Πίσω στην αρχή">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+  </button>
+
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Μεγέθυνση φωτογραφίας" hidden>
+    <div class="lb-backdrop" id="lb-backdrop"></div>
+    <figure class="lb-stage">
+      <div class="lb-frame" id="lb-frame"><img id="lb-img" alt="" draggable="false"></div>
+      <figcaption class="lb-cap">
+        <div class="lb-name" id="lb-name"></div>
+        <div class="lb-sub" id="lb-sub"></div>
+      </figcaption>
+    </figure>
+    <button class="icon-btn lb-btn lb-close" id="lb-close" type="button" aria-label="Κλείσιμο">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <button class="icon-btn lb-btn lb-prev" id="lb-prev" type="button" aria-label="Προηγούμενο">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button class="icon-btn lb-btn lb-next" id="lb-next" type="button" aria-label="Επόμενο">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <div class="cursor" id="cursor" aria-hidden="true">
+    <div class="cursor-dot">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </div>
+  </div>
+
+  <template id="card-tpl">
+    <article class="card">
+      <button class="card-inner" type="button">
+        <span class="card-shadow"></span>
+        <span class="card-face">
+          <span class="thumb"><img alt="" decoding="async" draggable="false"><span class="glare"></span></span>
+          <span class="meta">
+            <span class="cat"></span>
+            <span class="name"></span>
+          </span>
+        </span>
+      </button>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

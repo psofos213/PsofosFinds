@@ -1,0 +1,7 @@
+Fonts in this folder, fetched from Google Fonts, all under the SIL Open Font License 1.1:
+
+  archivo-expanded-black-latin.woff2   Archivo (width 125, weight 900), Omnibus-Type
+  manrope-latin.woff2, manrope-greek.woff2               Manrope, Mikhail Sharanda
+  jetbrains-mono-latin.woff2, jetbrains-mono-greek.woff2 JetBrains Mono, JetBrains
+
+License text: openfontlicense.org
